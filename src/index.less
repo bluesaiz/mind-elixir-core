@@ -33,7 +33,7 @@
     height: 0px;
   }
   .selected {
-    box-shadow: 0 0 0 2px #4dc4ff;
+    box-shadow: 0 0 0 2px #b2d9c7;
   }
   .lhs {
     direction: rtl;
@@ -86,6 +86,16 @@
       }
     }
   }
+
+  me-tpc {
+    .me-node-type {
+      // background-color: lightgray;
+      padding: 4px;
+      // border-radius: 10px;
+      // margin-right: 4px;
+    }
+  }
+
   me-wrapper {
     display: block;
     pointer-events: none;
@@ -110,6 +120,7 @@
       white-space: pre-wrap;
       padding: var(--topic-padding);
       line-height: 1.2; // assure the line-height consistency between different languages
+
       .tags {
         direction: ltr;
         span {
@@ -233,6 +244,56 @@
     z-index: 11;
     direction: ltr;
     user-select: auto;
+  }
+
+
+  .m-node-module{
+    background-color: rgb(249, 245, 182) !important;
+  }
+
+  .m-node-subModule{
+    background-color: rgb(247, 240, 146) !important;
+  }
+
+
+  .m-node-example{
+    background-color: rgb(247, 236, 81) !important;
+  }
+
+  .m-node-expect{
+    background-color: #c7e088 !important;
+  }
+
+  .me-node-type-item {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: #b2ceaf ;
+    margin-right: 4px;
+  }
+
+  #type-select-box {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    outline: none;
+    top: 0;
+    left: 0;
+    padding: 8px 16px;
+    background-color: #e0dede;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    max-width: 800px;
+    z-index: 11;
+    width: max-content; // let words expand the div and keep max length at the same time
+
+    .me-node-type-item {
+      font-size:13px;
+      color:#444446;
+    }
+
+    .me-node-type-item + .me-node-type-item  {
+      margin-left: 6px;
+    }
   }
 
   me-tpc > img {

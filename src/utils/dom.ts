@@ -8,14 +8,28 @@ export const findEle = (id: string, instance?) => {
   return scope.querySelector(`[data-nodeid=me${id}]`)
 }
 
-export const shapeTpc = function (tpc: Topic, nodeObj: NodeObj) {
-  tpc.textContent = nodeObj.topic
+export const shapeTpc = function (tpc: Topic, nodeObj: NodeObj, mind: MindElixirInstance) {
 
   if (nodeObj.style) {
     tpc.style.color = nodeObj.style.color || null
     tpc.style.background = nodeObj.style.background || null
     tpc.style.fontSize = nodeObj.style.fontSize + 'px'
     tpc.style.fontWeight = nodeObj.style.fontWeight || 'normal'
+  }
+
+
+  if (nodeObj.type) {
+    const typeContainer = $d.createElement('span')
+    typeContainer.className = `me-node-type me-node-type-item ${mind.NodeTypeClassMap[nodeObj.type]}` // 
+    typeContainer.textContent = nodeObj.type
+    tpc.appendChild(typeContainer)
+  }
+
+  if(nodeObj.topic){
+    const textContainer = $d.createElement('span')
+    textContainer.className = 'me-node-text'
+    textContainer.textContent = nodeObj.topic
+    tpc.appendChild(textContainer)
   }
 
   if (nodeObj.image) {
@@ -80,7 +94,7 @@ export const createWrapper: CreateWrapper = function (nodeObj, omitChildren) {
 export const createParent: CreateParent = function (nodeObj: NodeObj): Parent {
   const top = $d.createElement('me-parent') as Parent
   const tpc = this.createTopic(nodeObj)
-  shapeTpc(tpc, nodeObj)
+  shapeTpc(tpc, nodeObj, this)
   top.appendChild(tpc)
   return top
 }
@@ -113,7 +127,10 @@ export const createInputDiv: CreateInputDiv = function (tpc) {
   console.time('createInputDiv')
   if (!tpc) return
   let div = $d.createElement('div')
-  const origin = tpc.childNodes[0].textContent as string
+  
+  const textNode = tpc.querySelector('.me-node-text')
+  const origin = textNode.textContent as string
+
   tpc.appendChild(div)
   div.id = 'input-box'
   div.textContent = origin
@@ -148,22 +165,99 @@ export const createInputDiv: CreateInputDiv = function (tpc) {
     if (!div) return
     const node = tpc.nodeObj
     const topic = div.textContent!.trim()
-    console.log(topic)
+
     if (topic === '') node.topic = origin
     else node.topic = topic
     div.remove()
     this.inputDiv = div = null
     if (topic === origin) return
-    tpc.childNodes[0].textContent = node.topic
+    const textNode = tpc.querySelector('.me-node-text')
+    textNode.textContent = node.topic
     this.linkDiv()
     this.bus.fire('operation', {
       name: 'finishEdit',
       obj: node,
       origin,
     })
+    // this.createNodeTypeSelect()
   })
   console.timeEnd('createInputDiv')
 }
+
+
+
+
+
+export const createNodeTypeSelect: CreateDiv = function (el: Topic | null  = null, moreInput = false) {
+  console.time('createNodeTypeSelect')
+  const tpc = el || this.currentNode
+  let typeNode = tpc.querySelector(".me-node-type")
+
+  let div = $d.createElement('div')
+
+  tpc.appendChild(div)
+  div.id = 'type-select-box'
+  div.tabIndex = 150
+  const origin = typeNode ? typeNode.textContent : ''
+  const nodeTypes = this.nodeTypes
+  let divInnerHtml = ''
+  for(let i in nodeTypes){
+    const typeContent = nodeTypes[i]
+    divInnerHtml = divInnerHtml.concat(`<span class="me-node-type-item ${typeContent.className}">${typeContent.title}</span>\n`)
+  }
+  div.innerHTML = divInnerHtml
+  div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
+  div.style.top = `${tpc.offsetHeight + 2}px`
+  div.style.left = `${tpc.offsetWidth / 2 - div.offsetWidth / 2}px`
+  if (this.direction === LEFT) div.style.right = '0'
+  div.focus()
+
+  this.typeSelectDiv = div
+
+
+  div.onblur = (e) => {
+    if (!div) return
+    div.remove()
+    if(moreInput){
+      this.createInputDiv(tpc)
+    }
+  }
+
+  div.onclick = (e) => {
+    if (!div) return
+    const selectedEle = e.target as HTMLElement
+    if (!(selectedEle.classList.contains('me-node-type-item')) ) return
+    const type = selectedEle.textContent
+    const node = tpc.nodeObj
+
+    node.type = type 
+    div.onblur = null
+    div.remove()
+    this.typeSelectDiv = div = null
+
+    if (type === origin) return
+    let typeNode = tpc.querySelector('.me-node-type')
+    if(!typeNode){
+      typeNode = $d.createElement('span')
+      tpc.insertBefore(typeNode, tpc.firstChild)
+    }
+    typeNode.textContent = node.type
+    typeNode.className = `me-node-type ${selectedEle.className}`
+    this.linkDiv()
+    this.bus.fire('operation', {
+      name: 'updateType',
+      obj: node,
+      origin,
+    })
+    if (moreInput) {
+      this.createInputDiv(tpc)
+    }
+  }
+  console.timeEnd('createNodeTypeSelect')
+}
+
+
+
 
 export const createExpander = function (expanded: boolean | undefined): Expander {
   const expander = $d.createElement('me-epd') as Expander

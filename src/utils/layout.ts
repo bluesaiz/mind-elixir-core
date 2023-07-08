@@ -9,7 +9,7 @@ export const layout = function () {
   this.root.innerHTML = ''
   this.mainNodes.innerHTML = ''
   const tpc = this.createTopic(this.nodeData)
-  shapeTpc(tpc, this.nodeData) // shape root tpc
+  shapeTpc(tpc, this.nodeData, this) // shape root tpc
   tpc.draggable = false
   this.root.appendChild(tpc)
 

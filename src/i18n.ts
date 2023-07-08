@@ -1,4 +1,5 @@
 const cn = {
+  selectNodeType: '选择节点类型',
   addChild: '插入子节点',
   addParent: '插入父节点',
   addSibling: '插入同级节点',
@@ -14,6 +15,7 @@ export default {
   cn,
   zh_CN: cn,
   zh_TW: {
+    selectNodeType: '選擇節點類型',
     addChild: '插入子節點',
     addParent: '插入父節點',
     addSibling: '插入同級節點',
@@ -26,6 +28,7 @@ export default {
     clickTips: '請點擊目標節點',
   },
   en: {
+    selectNodeType: 'select node type',
     addChild: 'Add child',
     addParent: 'Add parent',
     addSibling: 'Add sibling',

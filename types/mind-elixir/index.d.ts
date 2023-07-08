@@ -17,6 +17,9 @@ interface Theme {
 }
 
 interface MindElixirInstance {
+  NodeTypeClassMap: {}
+  nodeTypes: object
+  typeSelectDiv: HTMLDivElement
   mindElixirBox: HTMLElement
   nodeData: NodeObj
   linkData: LinkObj
@@ -78,6 +81,7 @@ interface MindElixirInstance {
 
   addChild: TNodeOperation
   createInputDiv: CreateInputDiv
+  createNodeTypeSelect: CreateDiv
   layoutChildren: LayoutChildren
 
   selectNode: SelectNodeFunc
@@ -127,10 +131,12 @@ interface Options {
   mainNodeVerticalGap?: number
   mobileMenu?: boolean
   theme?: Theme
+  nodeTypes?: object
 }
 interface NodeObj {
   topic: string
   id: string
+  type?:string
   style?: {
     fontSize?: string
     color?: string

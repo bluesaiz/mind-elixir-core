@@ -17,6 +17,7 @@ export default function (mind, option) {
   }
   const locale = i18n[mind.locale] ? mind.locale : 'en'
 
+  const select_node_type = createLi('cm-select_node_type', i18n[locale].selectNodeType, '')
   const add_child = createLi('cm-add_child', i18n[locale].addChild, 'tab')
   const add_parent = createLi('cm-add_parent', i18n[locale].addParent, '')
   const add_sibling = createLi('cm-add_sibling', i18n[locale].addSibling, 'enter')
@@ -29,6 +30,7 @@ export default function (mind, option) {
 
   const menuUl = document.createElement('ul')
   menuUl.className = 'menu-list'
+  menuUl.appendChild(select_node_type)
   menuUl.appendChild(add_child)
   menuUl.appendChild(add_parent)
   menuUl.appendChild(add_sibling)
@@ -63,7 +65,11 @@ export default function (mind, option) {
     e.preventDefault()
     if (!mind.editable) return
     // console.log(e.pageY, e.screenY, e.clientY)
-    const target = e.target
+    let target = e.target
+    if(target.parentElement.tagName === 'ME-TPC'){
+      target = target.parentElement
+    }
+    
     if (target.tagName === 'ME-TPC') {
       if (target.parentElement.tagName === 'ME-ROOT') {
         isRoot = true
@@ -106,6 +112,11 @@ export default function (mind, option) {
 
   menuContainer.onclick = e => {
     if (e.target === menuContainer) menuContainer.hidden = true
+  }
+
+  select_node_type.onclick = () => {
+    mind.createNodeTypeSelect()
+    menuContainer.hidden = true
   }
 
   add_child.onclick = () => {
@@ -156,6 +167,8 @@ export default function (mind, option) {
         e.preventDefault()
         tips.remove()
         if (e.target.parentElement.tagName === 'ME-PARENT' || e.target.parentElement.tagName === 'ME-ROOT') {
+          mind.createLink(from, mind.currentNode)
+        } else if ( ['me-node-text'].includes(e.target.className)  && e.target.parentElement.tagName === 'ME-TPC'){
           mind.createLink(from, mind.currentNode)
         } else {
           console.log('link cancel')

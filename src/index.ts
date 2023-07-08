@@ -1,6 +1,6 @@
 import { LEFT, RIGHT, SIDE, GAP, THEME } from './const'
 import { isMobile, addParentLink, getObjById, generateUUID, generateNewObj } from './utils/index'
-import { findEle, createInputDiv, createWrapper, createParent, createChildren, createTopic } from './utils/dom'
+import { findEle, createInputDiv, createWrapper, createParent, createChildren, createTopic, createNodeTypeSelect } from './utils/dom'
 import { layout, layoutChildren, judgeDirection } from './utils/layout'
 import { createLinkSvg, createLine } from './utils/svg'
 import {
@@ -107,6 +107,7 @@ function MindElixir(
     mainNodeVerticalGap,
     mobileMenu,
     theme,
+    nodeTypes,
   }: Options
 ) {
   console.log('ME_version ' + MindElixir.version, this)
@@ -123,6 +124,11 @@ function MindElixir(
   ele.innerHTML = ''
   ele.style.setProperty('--gap', GAP + 'px')
   this.mindElixirBox = ele
+  this.nodeTypes = nodeTypes || {}
+  this.NodeTypeClassMap = {}
+  for (let i in nodeTypes){
+    this.NodeTypeClassMap[nodeTypes[i].title] = nodeTypes[i].className
+  }
   this.before = before || {}
   this.locale = locale
   this.contextMenuOption = contextMenuOption
@@ -263,6 +269,7 @@ MindElixir.prototype = {
   layout,
   linkDiv,
   createInputDiv,
+  createNodeTypeSelect,
 
   layoutChildren,
   createWrapper,

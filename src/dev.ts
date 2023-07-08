@@ -15,12 +15,12 @@ interface Window {
 
 declare let window: Window
 
-const options = {
+const options  = {
   el: '#map',
   newTopicName: '子节点',
   direction: MindElixir.SIDE,
   // direction: MindElixir.RIGHT,
-  locale: 'en',
+  locale: 'cn',
   draggable: true,
   editable: true,
   contextMenu: true,
@@ -38,7 +38,16 @@ const options = {
   },
   mobileMenu: true,
   toolBar: true,
-  nodeMenu: true,
+  // nodeMenu: true,
+  nodeTypes: {
+    module: {className: 'm-node-module', title: '类别'},
+    subModule: {className: 'm-node-subModule', title: '子类'},
+    example: {className: 'm-node-example', title: '用例'},
+    step: {className: 'm-node-step', title: '步骤'},
+    expect: {className: 'm-node-expect', title: '期望'},
+    expr: {className: 'm-node-expr', title: '语句'},
+    comment: {className: 'm-node-comment', title: '注释'},
+  },
   keypress: true,
   allowUndo: false,
   before: {
@@ -55,6 +64,7 @@ const options = {
       return true
     },
   },
+  
   mainLinkStyle: 1,
   mainNodeVerticalGap: 25, // 25
   mainNodeHorizontalGap: 65, // 65

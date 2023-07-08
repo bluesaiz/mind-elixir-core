@@ -1,4 +1,5 @@
 type CreateInputDiv = (this: MindElixirInstance, el: Topic) => void
+type CreateDiv = (this: MindElixirInstance, el?: Topic | null, moreInput? : boolean) => void
 type CreateWrapper = (
   this: MindElixirInstance,
   nodeObj: NodeObj,

@@ -40,7 +40,7 @@ export const reshapeNode: ReshapeNode = function (tpc, patchData) {
     patchData.style = Object.assign(origin.style, patchData.style)
   }
   const newObj = Object.assign(nodeObj, patchData)
-  shapeTpc(tpc, newObj)
+  shapeTpc(tpc, newObj, this)
   this.linkDiv()
   this.bus.fire('operation', {
     name: 'reshapeNode',
@@ -85,7 +85,8 @@ export const insertSibling: TNodeOperation = function (el, node) {
     this.linkDiv(grp.offsetParent)
   }
   if (!node) {
-    this.createInputDiv(top.children[0] as Topic)
+    this.createNodeTypeSelect(top.children[0] as Topic, true)
+    // this.createInputDiv(top.children[0] as Topic)
   }
   this.selectNode(top.children[0] as Topic, true)
   console.timeEnd('insertSibling_DOM')
@@ -185,7 +186,8 @@ export const insertParent: TNodeOperation = function (el, node) {
   }
 
   if (!node) {
-    this.createInputDiv(top.children[0] as Topic)
+    this.createNodeTypeSelect(top.children[0] as Topic, true)
+    // this.createInputDiv()
   }
   this.selectNode(top.children[0] as Topic, true)
   console.timeEnd('insertParent_DOM')
@@ -250,7 +252,8 @@ export const addChild: TNodeOperation = function (el, node) {
   })
   console.timeEnd('addChild')
   if (!node) {
-    this.createInputDiv(newTop.children[0])
+    this.createNodeTypeSelect(newTop.children[0], true)
+    // this.createInputDiv(newTop.children[0])
   }
   this.selectNode(newTop.children[0], true)
 }
@@ -527,7 +530,8 @@ export const beginEdit: TNodeOperation = function (el) {
 }
 
 export const setNodeTopic = function (tpc, topic) {
-  tpc.childNodes[0].textContent = topic
+  const textNode = tpc.querySelector('.me-node-text')
+  textNode.textContent = topic
   tpc.nodeObj.topic = topic
   this.linkDiv()
 }

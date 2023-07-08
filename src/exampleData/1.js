@@ -1,23 +1,25 @@
 export default {
   direction: 0,
-  theme: {
-    name: 'Dark',
-    palette: ['#848FA0', '#748BE9', '#D2F9FE', '#4145A5', '#789AFA', '#706CF4', '#EF987F', '#775DD5', '#FCEECF', '#DA7FBC'],
-    cssVar: {
-      '--main-color': '#ffffff',
-      '--main-bgcolor': '#4c4f69',
-      '--color': '#cccccc',
-      '--bgcolor': '#252526',
-    },
-  },
+  // theme: {
+  //   name: 'Dark',
+  //   palette: ['#848FA0', '#748BE9', '#D2F9FE', '#4145A5', '#789AFA', '#706CF4', '#EF987F', '#775DD5', '#FCEECF', '#DA7FBC'],
+  //   cssVar: {
+  //     '--main-color': '#ffffff',
+  //     '--main-bgcolor': '#4c4f69',
+  //     '--color': '#cccccc',
+  //     '--bgcolor': '#252526',
+  //   },
+  // },
   nodeData: {
     id: 'me-root',
-    topic: 'Mind Elixir',
+    topic: 'Mind Elixir1111',
+    type: 'module',
     root: true,
     children: [
       {
         topic: 'logo2',
         id: '56dae51a90d350a8',
+        type: '子类',
         direction: 0,
         expanded: true,
         children: [
@@ -35,27 +37,45 @@ export default {
         topic: 'What is Minde Elixir',
         id: 'bd4313fbac40284b',
         direction: 0,
+        type: "子类",
         expanded: true,
         // branchColor: '#e64553',
         children: [
-          { topic: 'A mind map core', id: 'beeb823afd6d2114' },
-          { topic: 'Free', id: 'c1f068377de9f3a0' },
-          { topic: 'Open-Source', id: 'c1f06d38a09f23ca' },
+          { topic: 'A mind map core', type: "子类", id: 'beeb823afd6d2114' },
+          { topic: 'Free', type: "子类", id: 'c1f068377de9f3a0' },
+          { topic: 'Open-Source', type: "子类", id: 'c1f06d38a09f23ca' },
           {
             topic: 'Use without JavaScript framework',
+            type: "子类",
             id: 'c1f06e4cbcf16463',
             expanded: true,
             children: [],
           },
           {
             topic: 'Use in your own project',
+            type: '用例',
             id: 'c1f1f11a7fbf7550',
             children: [
               {
                 topic: "import MindElixir from 'mind-elixir'",
+                type: "步骤",
                 id: 'c1f1e245b0a89f9b',
+                children: [
+                  {
+                    topic: "import MindElixir from 'mind-elixir'",
+                    type: "步骤",
+                    id: 'c1f1e245b0a89f9b1',
+                  },
+                  { 
+                    topic: 'new MindElixir({...}).init(data)', 
+                    type: "期望", id: 'c1f1ebc7072c89281' 
+                  },
+                ],
               },
-              { topic: 'new MindElixir({...}).init(data)', id: 'c1f1ebc7072c8928' },
+              { 
+                topic: 'new MindElixir({...}).init(data)', 
+                type: "期望", id: 'c1f1ebc7072c8928' 
+              },
             ],
           },
           {
