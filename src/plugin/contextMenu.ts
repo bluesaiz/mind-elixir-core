@@ -37,6 +37,7 @@ export default function (mind: MindElixirInstance, option: true | ContextMenuOpt
   }
   const locale = i18n[mind.locale] ? mind.locale : 'en'
   const lang = i18n[locale]
+  const select_node_type = createLi('cm-select_node_type', lang.selectNodeType || 'Select Node Type', '')
   const add_child = createLi('cm-add_child', lang.addChild, 'Tab')
   const add_parent = createLi('cm-add_parent', lang.addParent, 'Ctrl + Enter')
   const add_sibling = createLi('cm-add_sibling', lang.addSibling, 'Enter')
@@ -145,6 +146,11 @@ export default function (mind: MindElixirInstance, option: true | ContextMenuOpt
     if (e.target === menuContainer) menuContainer.hidden = true
   }
 
+  select_node_type.onclick = () => {
+    mind.createNodeTypeSelect()
+    menuContainer.hidden = true
+  }
+
   add_child.onclick = () => {
     mind.addChild()
     menuContainer.hidden = true
@@ -213,6 +219,7 @@ export default function (mind: MindElixirInstance, option: true | ContextMenuOpt
   }
   return () => {
     // maybe useful?
+    select_node_type.onclick = null
     add_child.onclick = null
     add_parent.onclick = null
     add_sibling.onclick = null

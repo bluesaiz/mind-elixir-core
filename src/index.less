@@ -279,6 +279,11 @@
         pointer-events: auto;
       }
     }
+    .me-node-type {
+      padding: 4px;
+      pointer-events: auto; // Allow clicking
+      cursor: pointer;
+    }
     & > img {
       display: block;
       margin-bottom: 8px;
@@ -376,6 +381,60 @@
     padding: var(--topic-padding);
     &[data-type='arrow'] {
       background-color: var(--main-bgcolor-transparent);
+    }
+  }
+
+  .m-node-module {
+    background-color: rgb(249, 245, 182) !important;
+  }
+
+  .m-node-subModule {
+    background-color: rgb(247, 240, 146) !important;
+  }
+
+  .m-node-example {
+    background-color: rgb(247, 236, 81) !important;
+  }
+
+  .m-node-expect {
+    background-color: #c7e088 !important;
+  }
+
+  .me-node-type-item {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: #b2ceaf;
+    margin-right: 4px;
+  }
+
+  #type-select-box {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    outline: none;
+    top: 0;
+    left: 0;
+    padding: 8px 16px;
+    background-color: #e0dede;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    max-width: 800px;
+    z-index: 11;
+    width: max-content; // let words expand the div and keep max length at the same time
+    pointer-events: auto;
+
+    .me-node-type-item {
+      font-size: 13px;
+      color: #444446;
+      cursor: pointer;
+      &:focus {
+        outline: 2px solid var(--selected);
+        border-radius: 8px;
+      }
+    }
+
+    .me-node-type-item + .me-node-type-item {
+      margin-left: 6px;
     }
   }
 }

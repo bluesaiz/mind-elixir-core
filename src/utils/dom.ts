@@ -47,6 +47,16 @@ export const shapeTpc = function (this: MindElixirInstance, tpc: Topic, nodeObj:
     tpc.image = undefined
   }
 
+  if (nodeObj.type) {
+    const typeContainer = $d.createElement('span')
+    const typeInfo = this.nodeTypes[nodeObj.type]
+    if (typeInfo) {
+      typeContainer.className = `me-node-type me-node-type-item ${typeInfo.className}`
+      typeContainer.textContent = typeInfo.title
+      tpc.appendChild(typeContainer)
+    }
+  }
+
   {
     const textEl = $d.createElement('span')
     textEl.className = 'text'
@@ -172,6 +182,8 @@ export const editTopic = function (this: MindElixirInstance, el: Topic) {
 
   // Use getOffsetLT to calculate el's offset relative to this.nodes
   const { offsetLeft, offsetTop } = getOffsetLT(this.nodes, el)
+  const typeBadge = el.querySelector('.me-node-type') as HTMLElement | null
+  const typeOffsetY = typeBadge ? typeBadge.offsetHeight + 6 : 0
 
   // Insert input box into this.nodes instead of el
   this.nodes.appendChild(div)
@@ -182,7 +194,7 @@ export const editTopic = function (this: MindElixirInstance, el: Topic) {
   const style = getComputedStyle(el)
   div.style.cssText = `
   left: ${offsetLeft}px;
-  top: ${offsetTop}px;
+  top: ${offsetTop + typeOffsetY}px;
   min-width:${el.offsetWidth - 8}px;
   color:${style.color};
   font-size:${style.fontSize};
@@ -245,4 +257,129 @@ export const createExpander = function (expanded: boolean | undefined): Expander
   expander.expanded = expanded !== false
   expander.className = expanded !== false ? 'minus' : ''
   return expander
+}
+
+export const createNodeTypeSelect = function (this: MindElixirInstance, el: Topic | null = null, moreInput = false) {
+  console.time('createNodeTypeSelect')
+  const tpc = el || this.currentNode
+  if (!tpc) return
+  const div = $d.createElement('div')
+
+  tpc.appendChild(div)
+  div.id = 'type-select-box'
+  div.tabIndex = 150
+  const node = tpc.nodeObj
+  const origin = { ...node }
+  const nodeTypes = this.nodeTypes
+
+  div.innerHTML = ''
+  const items: HTMLSpanElement[] = []
+  let currentIndex = 0
+  for (const i in nodeTypes) {
+    const typeContent = nodeTypes[i]
+    const span = $d.createElement('span')
+    span.className = `me-node-type-item ${typeContent.className}`
+    span.textContent = typeContent.title
+    span.tabIndex = 0
+    if (node.type && typeContent.title === node.type) {
+      currentIndex = items.length
+    }
+    span.onclick = e => {
+      e.stopPropagation() // prevent triggering div.onclick if any
+      const typeTitle = span.textContent
+      const node = tpc.nodeObj
+      const originalType = node.type // Store original type before modification
+
+      // Find the key (type) based on the title
+      let typeKey = ''
+      for (const key in this.nodeTypes) {
+        if (this.nodeTypes[key].title === typeTitle) {
+          typeKey = key
+          break
+        }
+      }
+
+      node.type = typeKey || undefined
+      div.onblur = null
+      div.remove()
+      this.typeSelectDiv = undefined
+
+      // Compare with the key stored in nodeTypes, not the display title
+      if (typeKey === originalType) return
+
+      shapeTpc.call(this, tpc, node)
+      this.linkDiv()
+      this.bus.fire('operation', {
+        name: 'reshapeNode',
+        obj: node,
+        origin,
+      })
+      if (moreInput) {
+        this.editTopic(tpc)
+      }
+    }
+    div.appendChild(span)
+    items.push(span)
+  }
+
+  div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
+  div.style.top = `${tpc.offsetHeight + 2}px`
+  div.style.left = `${tpc.offsetWidth / 2 - div.offsetWidth / 2}px`
+  if (this.direction === LEFT) div.style.right = '0'
+  div.focus()
+  // focus initial item
+  if (items.length) {
+    items[currentIndex].focus()
+  }
+
+  this.typeSelectDiv = div
+
+  div.addEventListener('mousedown', e => {
+    e.stopPropagation()
+    e.preventDefault()
+  })
+
+  const focusItem = (idx: number) => {
+    if (!items.length) return
+    currentIndex = (idx + items.length) % items.length
+    items[currentIndex].focus()
+  }
+  const selectCurrent = () => {
+    if (!items.length) return
+    items[currentIndex].click()
+  }
+  div.addEventListener('keydown', e => {
+    e.stopPropagation()
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      focusItem(currentIndex + (e.shiftKey ? -1 : 1))
+    } else if (e.key === 'Enter') {
+      e.preventDefault()
+      selectCurrent()
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault()
+      focusItem(currentIndex + 1)
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      focusItem(currentIndex - 1)
+    } else if (e.key === 'Escape') {
+      e.preventDefault()
+      div.onblur = null
+      div.remove()
+      this.typeSelectDiv = undefined
+      if (moreInput) {
+        this.editTopic(tpc)
+      }
+    }
+  })
+
+  div.onblur = e => {
+    if (!div) return
+    div.remove()
+    if (moreInput) {
+      this.editTopic(tpc)
+    }
+  }
+
+  console.timeEnd('createNodeTypeSelect')
 }

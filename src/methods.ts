@@ -6,7 +6,7 @@ import nodeDraggable from './plugin/nodeDraggable'
 import operationHistory from './plugin/operationHistory'
 import toolBar from './plugin/toolBar'
 import selection from './plugin/selection'
-import { editTopic, createWrapper, createParent, createChildren, createTopic, findEle } from './utils/dom'
+import { editTopic, createWrapper, createParent, createChildren, createTopic, findEle, createNodeTypeSelect } from './utils/dom'
 import { getObjById, generateNewObj, fillParent } from './utils/index'
 import { layout } from './utils/layout'
 import { changeTheme } from './utils/theme'
@@ -63,6 +63,7 @@ const methods = {
   createChildren,
   createTopic,
   findEle,
+  createNodeTypeSelect,
   changeTheme,
   ...interact,
   ...(nodeOperationHooked as NodeOperation),

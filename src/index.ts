@@ -35,6 +35,7 @@ function MindElixir(
     generateSubBranch,
     overflowHidden,
     theme,
+    nodeTypes,
     alignment,
     scaleSensitivity,
     scaleMax,
@@ -57,6 +58,12 @@ function MindElixir(
   ele.style.position = 'relative'
   ele.innerHTML = ''
   this.el = ele as HTMLElement
+  this.nodeTypes = nodeTypes || {}
+  this.NodeTypeClassMap = {}
+  for (const i in nodeTypes) {
+    this.NodeTypeClassMap[nodeTypes[i].title] = nodeTypes[i].className
+    this.NodeTypeClassMap[i] = nodeTypes[i].className
+  }
   this.disposable = []
   this.before = before || {}
   this.locale = locale || 'en'

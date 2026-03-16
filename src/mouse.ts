@@ -118,6 +118,10 @@ export default function (mind: MindElixirInstance) {
       } else {
         mind.expandNode((target as Expander).previousSibling)
       }
+    } else if (target.classList.contains('me-node-type')) {
+      const tpc = target.parentElement as Topic
+      mind.selectNode(tpc)
+      mind.createNodeTypeSelect(tpc)
     } else if (target.tagName === 'ME-TPC' && mind.currentNodes.length > 1) {
       // This is a bit complex, intertwined with selection and nodeDraggable
       // The main conflict is between multi-node dragging and selecting a single node when multiple nodes are already selected

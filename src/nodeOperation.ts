@@ -86,7 +86,7 @@ export const insertSibling = function (this: MindElixirInstance, type: 'before' 
   this.linkDiv(grp.offsetParent)
 
   if (!node) {
-    this.editTopic(top.firstChild)
+    this.createNodeTypeSelect(top.firstChild, true)
   }
   console.timeEnd('insertSibling_DOM')
   this.bus.fire('operation', {
@@ -121,7 +121,7 @@ export const insertParent = function (this: MindElixirInstance, el?: Topic, node
   this.linkDiv()
 
   if (!node) {
-    this.editTopic(top.firstChild)
+    this.createNodeTypeSelect(top.firstChild, true)
   }
   this.selectNode(top.firstChild, true)
   console.timeEnd('insertParent_DOM')
@@ -145,7 +145,7 @@ export const addChild = function (this: MindElixirInstance, el?: Topic, node?: N
   })
   console.timeEnd('addChild')
   if (!node) {
-    this.editTopic(newTop.firstChild)
+    this.createNodeTypeSelect(newTop.firstChild, true)
   }
   this.selectNode(newTop.firstChild, true)
 }

@@ -124,6 +124,9 @@ export interface MindElixirInstance extends Omit<Required<Options>, 'markdown' |
 
   selection: SelectionArea
   dragMoveHelper: ReturnType<typeof createDragMoveHelper>
+
+  NodeTypeClassMap: Record<string, string>
+  typeSelectDiv: HTMLElement | undefined
 }
 type PathString = string
 /**
@@ -151,6 +154,7 @@ export interface Options {
   generateMainBranch?: (this: MindElixirInstance, params: MainLineParams) => PathString
   generateSubBranch?: (this: MindElixirInstance, params: SubLineParams) => PathString
   theme?: Theme
+  nodeTypes?: Record<string, { className: string; title: string }>
   selectionContainer?: string | HTMLElement
   alignment?: Alignment
   scaleSensitivity?: number
@@ -201,6 +205,7 @@ export interface TagObj {
 export interface NodeObj {
   topic: string
   id: Uid
+  type?: string
   style?: Partial<{
     fontSize: string
     fontFamily: string

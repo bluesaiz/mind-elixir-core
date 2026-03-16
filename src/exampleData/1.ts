@@ -37,18 +37,22 @@ const aboutMindElixir: MindElixirDataWithUseMd = {
         id: 'bd4313fbac40284b',
         direction: 0,
         expanded: true,
+        type: 'module',
         children: [
           {
             topic: 'A mind map core',
             id: 'beeb823afd6d2114',
+            type: 'subModule',
           },
           {
             topic: 'Free',
             id: 'c1f068377de9f3a0',
+            type: 'subModule',
           },
           {
             topic: 'Open-Source',
             id: 'c1f06d38a09f23ca',
+            type: 'subModule',
           },
           {
             topic: 'Framework agnostic',

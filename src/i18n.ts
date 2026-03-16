@@ -11,6 +11,7 @@ type LangPack = {
   linkBidirectional: string
   clickTips: string
   summary: string
+  selectNodeType?: string
 }
 
 /**
@@ -49,6 +50,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: '摘要',
   },
   en: {
+    selectNodeType: 'Select Node Type',
     addChild: 'Add child',
     addParent: 'Add parent',
     addSibling: 'Add sibling',
@@ -63,6 +65,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: 'Summary',
   },
   ru: {
+    selectNodeType: 'Выберите тип узла',
     addChild: 'Добавить дочерний элемент',
     addParent: 'Добавить родительский элемент',
     addSibling: 'Добавить на этом уровне',
@@ -77,6 +80,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: 'Описание',
   },
   ja: {
+    selectNodeType: 'ノードタイプを選択',
     addChild: '子ノードを追加する',
     addParent: '親ノードを追加します',
     addSibling: '兄弟ノードを追加する',
@@ -91,6 +95,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: '概要',
   },
   pt: {
+    selectNodeType: 'Selecione o tipo de nó',
     addChild: 'Adicionar item filho',
     addParent: 'Adicionar item pai',
     addSibling: 'Adicionar item irmao',
@@ -133,6 +138,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: 'Resumen',
   },
   fr: {
+    selectNodeType: 'Sélectionner le type de nœud',
     addChild: 'Ajout enfant',
     addParent: 'Ajout parent',
     addSibling: 'Ajout voisin',
@@ -147,6 +153,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: 'Annoter',
   },
   ko: {
+    selectNodeType: '노드 유형 선택',
     addChild: '자식 추가',
     addParent: '부모 추가',
     addSibling: '형제 추가',
@@ -161,6 +168,7 @@ const i18n: Record<Locale, LangPack> = {
     summary: '요약',
   },
   ro: {
+    selectNodeType: 'Selectați tipul nodului',
     addChild: 'Adaugă sub-nod',
     addParent: 'Adaugă nod părinte',
     addSibling: 'Adaugă nod la același nivel',

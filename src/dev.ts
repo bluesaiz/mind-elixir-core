@@ -34,6 +34,15 @@ const E = MindElixir.E
 const options: Options = {
   el: '#map',
   newTopicName: '子节点',
+  nodeTypes: {
+    module: { className: 'm-node-module', title: '类别' },
+    subModule: { className: 'm-node-subModule', title: '子类' },
+    example: { className: 'm-node-example', title: '用例' },
+    step: { className: 'm-node-step', title: '步骤' },
+    expect: { className: 'm-node-expect', title: '期望' },
+    expr: { className: 'm-node-expr', title: '语句' },
+    comment: { className: 'm-node-comment', title: '注释' },
+  },
   locale: 'en',
   // mouseSelectionButton: 2,
   editable: true,
