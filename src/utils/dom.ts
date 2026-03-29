@@ -323,10 +323,17 @@ export const createNodeTypeSelect = function (this: MindElixirInstance, el: Topi
     items.push(span)
   }
 
+  // Move div to this.nodes to avoid being clipped by me-parent's stacking context
+  const { offsetLeft, offsetTop } = getOffsetLT(this.nodes, tpc)
+  const divWidth = div.offsetWidth
+  this.nodes.appendChild(div)
   div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
-  div.style.top = `${tpc.offsetHeight + 2}px`
-  div.style.left = `${tpc.offsetWidth / 2 - div.offsetWidth / 2}px`
-  if (this.direction === LEFT) div.style.right = '0'
+  div.style.top = `${offsetTop + tpc.offsetHeight + 2}px`
+  if (this.direction === LEFT) {
+    div.style.left = `${offsetLeft + tpc.offsetWidth - divWidth}px`
+  } else {
+    div.style.left = `${offsetLeft + tpc.offsetWidth / 2 - divWidth / 2}px`
+  }
   div.focus()
   // focus initial item
   if (items.length) {
