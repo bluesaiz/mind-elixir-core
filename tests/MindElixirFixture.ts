@@ -18,10 +18,10 @@ export class MindElixirFixture {
   async goto() {
     await this.page.goto('http://localhost:23334/test.html')
   }
-  async init(data: MindElixirData, el = '#map') {
+  async init(data: MindElixirData, el = '#map', extraOptions: Partial<Options> = {}) {
     // evaluate return Serializable value
     await this.page.evaluate(
-      ({ data, el }) => {
+      ({ data, el, extraOptions }) => {
         const MindElixir = window.MindElixir
         const options: Options = {
           el,
@@ -29,13 +29,14 @@ export class MindElixirFixture {
           allowUndo: true, // Enable undo/redo functionality for tests
           keypress: true, // Enable keyboard shortcuts
           editable: true, // Enable editing
+          ...extraOptions,
         }
         const mind = new MindElixir(options)
         mind.init(JSON.parse(JSON.stringify(data)))
         window[el] = mind
         return mind
       },
-      { data, el }
+      { data, el, extraOptions }
     )
   }
   async getInstance(el = '#map') {

@@ -1,9 +1,51 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './mind-elixir-test'
 
-test('Node Type Selection', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
+const nodeTypes = {
+  module: { className: 'm-node-module', title: '类别' },
+  subModule: { className: 'm-node-subModule', title: '子类' },
+  example: { className: 'm-node-example', title: '用例' },
+  step: { className: 'm-node-step', title: '步骤' },
+  expect: { className: 'm-node-expect', title: '期望' },
+  expr: { className: 'm-node-expr', title: '语句' },
+  comment: { className: 'm-node-comment', title: '注释' },
+}
 
+const data = {
+  nodeData: {
+    id: 'me-root',
+    topic: 'Mind Elixir',
+    children: [
+      {
+        topic: 'What is Mind Elixir',
+        id: 'bd4313fbac40284b',
+        type: 'module',
+        children: [
+          {
+            topic: 'A mind map core',
+            id: 'beeb823afd6d2114',
+            type: 'subModule',
+          },
+          {
+            topic: 'Free',
+            id: 'c1f068377de9f3a0',
+            type: 'subModule',
+          },
+          {
+            topic: 'Open-Source',
+            id: 'c1f06d38a09f23ca',
+            type: 'subModule',
+          },
+        ],
+      },
+    ],
+  },
+}
+
+test.beforeEach(async ({ me }) => {
+  await me.init(data, '#map', { nodeTypes })
+})
+
+test('Node Type Selection', async ({ page, me }) => {
   const nodeWithType = page.locator('#map me-tpc:has-text("What is Mind Elixir")')
   await expect(nodeWithType).toBeVisible()
 
@@ -26,10 +68,7 @@ test('Node Type Selection', async ({ page }) => {
   await expect(typeBadge).toHaveClass(/m-node-subModule/)
 })
 
-test('New Node Type Selection', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
-
+test('New Node Type Selection', async ({ page, me }) => {
   const rootNode = page.locator('#map me-root > me-tpc')
   await rootNode.click()
 
@@ -58,10 +97,7 @@ test('New Node Type Selection', async ({ page }) => {
   await expect(newTypeBadge).toHaveClass(/m-node-example/)
 })
 
-test('Type Select Keyboard Navigation', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
-
+test('Type Select Keyboard Navigation', async ({ page, me }) => {
   const nodeWithType = page.locator('#map me-tpc:has-text("What is Mind Elixir")')
   await expect(nodeWithType).toBeVisible()
   const typeBadge = nodeWithType.locator('.me-node-type')
@@ -78,10 +114,7 @@ test('Type Select Keyboard Navigation', async ({ page }) => {
   await expect(typeBadge).toHaveText('子类')
 })
 
-test('Type Select Arrow Keys and Esc', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
-
+test('Type Select Arrow Keys and Esc', async ({ page, me }) => {
   const rootNode = page.locator('#map me-root > me-tpc')
   await rootNode.click()
   await page.keyboard.press('Enter')
@@ -106,10 +139,7 @@ test('Type Select Arrow Keys and Esc', async ({ page }) => {
   const inputBox = page.locator('#input-box')
   await expect(inputBox).toBeHidden()
 })
-test('Insert Sibling Node Type Selection', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
-
+test('Insert Sibling Node Type Selection', async ({ page, me }) => {
   const rootNode = page.locator('#map me-root > me-tpc')
   await rootNode.click()
 
@@ -142,10 +172,7 @@ test('Insert Sibling Node Type Selection', async ({ page }) => {
   await expect(newTypeBadge).toHaveClass(/m-node-step/)
 })
 
-test('Render Node Types', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
-
+test('Render Node Types', async ({ page, me }) => {
   const rootChild = page.locator('#map me-tpc:has-text("What is Mind Elixir")')
   await expect(rootChild.locator('.me-node-type')).toHaveText('类别')
   await expect(rootChild.locator('.me-node-type')).toHaveClass(/m-node-module/)
@@ -159,10 +186,7 @@ test('Render Node Types', async ({ page }) => {
   await expect(subNode2.locator('.me-node-type')).toHaveClass(/m-node-subModule/)
 })
 
-test('Input Box Position Below Type Badge', async ({ page }) => {
-  await page.goto('http://localhost:23333/')
-  await page.waitForSelector('me-nodes')
-
+test('Input Box Position Below Type Badge', async ({ page, me }) => {
   const rootNode = page.locator('#map me-root > me-tpc')
   await rootNode.click()
 
