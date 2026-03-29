@@ -301,6 +301,7 @@ export const createNodeTypeSelect = function (this: MindElixirInstance, el: Topi
 
       node.type = typeKey || undefined
       div.onblur = null
+      document.removeEventListener('mousedown', close)
       div.remove()
       this.typeSelectDiv = undefined
 
@@ -339,6 +340,22 @@ export const createNodeTypeSelect = function (this: MindElixirInstance, el: Topi
     e.preventDefault()
   })
 
+  const close = () => {
+    div.onblur = null
+    document.removeEventListener('mousedown', close)
+    div.remove()
+    this.typeSelectDiv = undefined
+    if (moreInput) {
+      this.editTopic(tpc)
+    }
+  }
+
+  div.onblur = () => {
+    close()
+  }
+
+  document.addEventListener('mousedown', close)
+
   const focusItem = (idx: number) => {
     if (!items.length) return
     currentIndex = (idx + items.length) % items.length
@@ -364,22 +381,9 @@ export const createNodeTypeSelect = function (this: MindElixirInstance, el: Topi
       focusItem(currentIndex - 1)
     } else if (e.key === 'Escape') {
       e.preventDefault()
-      div.onblur = null
-      div.remove()
-      this.typeSelectDiv = undefined
-      if (moreInput) {
-        this.editTopic(tpc)
-      }
+      close()
     }
   })
-
-  div.onblur = e => {
-    if (!div) return
-    div.remove()
-    if (moreInput) {
-      this.editTopic(tpc)
-    }
-  }
 
   console.timeEnd('createNodeTypeSelect')
 }
